@@ -37,22 +37,90 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import QtQuick.Layouts 1.1
 
 Page {
     objectName: "mainPage"
     allowedOrientations: Orientation.All
 
-    PageHeader {
-        objectName: "pageHeader"
-        title: qsTr("Speed test")
-        extraContent.children: [
-            IconButton {
-                objectName: "aboutButton"
-                icon.source: "image://theme/icon-m-about"
-                anchors.verticalCenter: parent.verticalCenter
+    ColumnLayout {
+        spacing: 20
+        anchors.margins: 40
+        anchors.fill: parent
 
-                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+        PageHeader {
+            objectName: "pageHeader"
+            title: qsTr("Speed test")
+            extraContent.children: [
+                IconButton {
+                    objectName: "aboutButton"
+                    icon.source: "image://theme/icon-m-about"
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+                }
+            ]
+        }
+
+
+        RowLayout {
+            width: parent.width
+            anchors.left: parent.left
+            layoutDirection: Qt.LeftToRight
+            spacing: -50 // IDK how to remove space between textfields, so I use this
+            TextField {
+                id: iperftext
+                font.pixelSize: Theme.fontSizeSmall
+                text: "$ iperf"
+                readOnly: true
+                Layout.preferredWidth: 160
+
             }
-        ]
+            TextField {
+                id: arguments
+                placeholderText: "-c 5gst.ru -p 5555"
+                inputMethodHints: Qt.ImhUrlCharactersOnly
+                Layout.fillWidth: true
+            }
+            Item {
+                Layout.preferredWidth: 80
+            }
+            Button {
+                id: startbutton
+                anchors.right: parent.right
+                width: 100
+                text: "Start"
+                onClicked: {console.log("Start"); iperfOutput.text=iperfOutput.text+"check\n";}
+                Layout.preferredWidth: 100
+            }
+        }
+
+        Item{
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            Rectangle{
+                anchors.fill: parent
+                border.width: 2
+                radius: 10
+                opacity: 0.2
+                color: palette.secondaryColor
+            }
+            SilicaFlickable {
+                anchors.margins: 20
+                anchors.fill: parent
+                contentWidth: iperfOutput.width; contentHeight: iperfOutput.height
+                clip: true
+
+                TextEdit {
+                    id: iperfOutput
+                    text: "iperf output..."
+                    color: palette.primaryColor
+                    readOnly: true
+
+                }
+                VerticalScrollDecorator {}
+            }
+        }
     }
 }

@@ -1,6 +1,15 @@
 # Prerequisites
 *.d
 
+# Build
+build* 
+
+# User files
+*.user
+
+# Autosaves
+*autosave
+
 # Compiled Object files
 *.slo
 *.lo
