@@ -37,9 +37,13 @@
 
 #include <auroraapp.h>
 #include <QtQuick>
+#include "iperf.h"
 
 int main(int argc, char *argv[])
 {
+    // Register our component type with QML.
+    qmlRegisterType<Iperf>("iperf", 1, 0, "Iperf");
+
     QScopedPointer<QGuiApplication> application(Aurora::Application::application(argc, argv));
     application->setOrganizationName(QStringLiteral("ru.auroraos"));
     application->setApplicationName(QStringLiteral("InnoAurora5Gst"));

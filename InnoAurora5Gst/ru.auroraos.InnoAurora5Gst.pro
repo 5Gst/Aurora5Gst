@@ -43,9 +43,11 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
-    src/main.cpp \
+    src/iperf.cpp \
+    src/main.cpp
 
 HEADERS += \
+    src/iperf.h
 
 DISTFILES += \
     rpm/ru.auroraos.InnoAurora5Gst.spec \

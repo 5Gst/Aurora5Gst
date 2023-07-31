@@ -38,6 +38,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtQuick.Layouts 1.1
+import iperf 1.0
 
 Page {
     objectName: "mainPage"
@@ -69,7 +70,6 @@ Page {
             layoutDirection: Qt.LeftToRight
             spacing: -50 // IDK how to remove space between textfields, so I use this
             TextField {
-                id: iperftext
                 font.pixelSize: Theme.fontSizeSmall
                 text: "$ iperf"
                 readOnly: true
@@ -81,8 +81,10 @@ Page {
                 placeholderText: "-c 5gst.ru -p 5555"
                 inputMethodHints: Qt.ImhUrlCharactersOnly
                 Layout.fillWidth: true
+                onTextChanged: {console.log("Change args"); iperf.args = text;}
             }
             Item {
+                // spacer item
                 Layout.preferredWidth: 80
             }
             Button {
@@ -90,7 +92,7 @@ Page {
                 anchors.right: parent.right
                 width: 100
                 text: "Start"
-                onClicked: {console.log("Start"); iperfOutput.text=iperfOutput.text+"check\n";}
+                onClicked: {console.log("Start"); iperf.startIperf();}
                 Layout.preferredWidth: 100
             }
         }
@@ -114,7 +116,7 @@ Page {
 
                 TextEdit {
                     id: iperfOutput
-                    text: "iperf output..."
+                    text: "iperf output...\n"
                     color: palette.primaryColor
                     readOnly: true
 
@@ -123,4 +125,18 @@ Page {
             }
         }
     }
+
+    Iperf{
+        id: iperf
+        onIperfFinished: {
+            iperfOutput.text += "---\n"
+            iperfOutput.text += output
+            if (success) {
+                iperfOutput.text += qsTr('\nIperf completed successfully\n')
+            } else {
+                iperfOutput.text += qsTr('\nIperf failed\n')
+            }
+        }
+    }
+
 }
