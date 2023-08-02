@@ -39,11 +39,17 @@ void Iperf::startIperf()
     // Execute iperf
     QString program = "iperf";
     QStringList arguments = m_args.split(" ");
-    qDebug()<<"start"<<program<<"with args:"<<arguments<<"(TODO)";
+    QProcess proc;
+    proc.start(program, arguments);
+    proc.waitForFinished();
+    QString out_text = "stdout:\n"+proc.readAllStandardOutput();
+    out_text += "\n\nstderr:\n"+proc.readAllStandardError();
+
+    qDebug()<<"start"<<program<<"with args:"<<arguments;
+    qDebug()<<"output"<<out_text;
+
     m_output = "start: '" + program + " " + arguments.join(" ") + "'";
-//    QProcess *proc = new QProcess;
-//    proc->start(program, arguments);
-//    proc->waitForFinished();
-//    delete proc;
+    m_output += "\noutput:'"+out_text+"'";
+
     emit iperfFinished(true);
 }

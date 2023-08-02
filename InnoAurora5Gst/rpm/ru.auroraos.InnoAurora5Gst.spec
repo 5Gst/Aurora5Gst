@@ -15,6 +15,12 @@ BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  desktop-file-utils
 
+#TODO add requirements
+#BuildRequires:  gcc 
+#BuildRequires:  gcc-c++
+#BuildRequires:  make
+#BuildRequires:  automake
+
 
 %description
 Short description of my Aurora OS Application
@@ -25,10 +31,18 @@ Short description of my Aurora OS Application
 %build
 %qmake5
 %make_build
+mkdir -p iPerf2_build
+pushd iPerf2_build
+%{_sourcedir}/../iPerf2/configure --prefix=/usr || echo 'F*ck iPerv' | tee /dev/full
+make -j%{getncpus}
+popd
 
 %install
 rm -rf %{buildroot}
 %qmake5_install
+pushd iPerf2_build
+make install-exec DESTDIR=%{buildroot}
+popd
 
 desktop-file-install --delete-original         --dir %{buildroot}%{_datadir}/applications                %{buildroot}%{_datadir}/applications/*.desktop
 
