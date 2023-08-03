@@ -36,7 +36,7 @@ pushd iPerf2_build
 # Note: options like `--build=<arch>`, `--host=<arch>` to configure (below) don't appear
 # to have any effect on the resulting binary (?), however, when built from Qt Creator
 # with an appropriate architecture, the corresponding executable is generated.
-%{_sourcedir}/../iPerf2/configure --prefix=/usr/share/ru.auroraos.InnoAurora5Gst/
+%{_sourcedir}/../iPerf2/configure --prefix=%{_datadir}/%{name}/
 make -j%{getncpus}
 popd
 
@@ -51,8 +51,8 @@ desktop-file-install --delete-original         --dir %{buildroot}%{_datadir}/app
 
 %files
 %defattr(644,root,root,-)
-%attr(755, root, root) %{_bindir}/ru.auroraos.InnoAurora5Gst
+%attr(755, root, root) %{_bindir}/%{name}
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
-%attr(755, root, root) /usr/share/ru.auroraos.InnoAurora5Gst/bin/iperf
+%attr(755, root, root) %{_datadir}/%{name}/bin/iperf
