@@ -37,7 +37,7 @@ void Iperf::startIperf()
     }
 
     // Execute iperf
-    QString program = "iperf";
+    QString program = "/usr/share/ru.auroraos.InnoAurora5Gst/bin/iperf";
     QStringList arguments = m_args.split(" ");
     QProcess proc;
     proc.start(program, arguments);

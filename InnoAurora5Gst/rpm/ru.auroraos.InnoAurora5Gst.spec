@@ -33,7 +33,10 @@ Short description of my Aurora OS Application
 %make_build
 mkdir -p iPerf2_build
 pushd iPerf2_build
-%{_sourcedir}/../iPerf2/configure --prefix=/usr || echo 'F*ck iPerv' | tee /dev/full
+# Note: options like `--build=<arch>`, `--host=<arch>` to configure (below) don't appear
+# to have any effect on the resulting binary (?), however, when built from Qt Creator
+# with an appropriate architecture, the corresponding executable is generated.
+%{_sourcedir}/../iPerf2/configure --prefix=/usr/share/ru.auroraos.InnoAurora5Gst/
 make -j%{getncpus}
 popd
 
@@ -48,7 +51,8 @@ desktop-file-install --delete-original         --dir %{buildroot}%{_datadir}/app
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}
+%{_bindir}/ru.auroraos.InnoAurora5Gst
+/usr/share/ru.auroraos.InnoAurora5Gst/bin/iperf
 %defattr(644,root,root,-)
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
