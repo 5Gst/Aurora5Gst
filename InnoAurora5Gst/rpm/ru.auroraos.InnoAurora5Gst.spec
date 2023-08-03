@@ -50,10 +50,9 @@ popd
 desktop-file-install --delete-original         --dir %{buildroot}%{_datadir}/applications                %{buildroot}%{_datadir}/applications/*.desktop
 
 %files
-%defattr(-,root,root,-)
-%{_bindir}/ru.auroraos.InnoAurora5Gst
-/usr/share/ru.auroraos.InnoAurora5Gst/bin/iperf
 %defattr(644,root,root,-)
+%attr(755, root, root) %{_bindir}/ru.auroraos.InnoAurora5Gst
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
+%attr(755, root, root) /usr/share/ru.auroraos.InnoAurora5Gst/bin/iperf
