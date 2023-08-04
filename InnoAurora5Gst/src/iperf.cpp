@@ -37,7 +37,13 @@ void Iperf::startIperf()
     }
 
     // Execute iperf
-    QString program = "iperf";
+    /*
+     * NOTE: it's expected that `%{_datadir}` in the .spec file is "/usr/share",
+     * and the project's `%{name}` is "ru.auroraos.InnoAurora5Gst"; otherwise
+     * the following line shall be updated.
+     * TODO: could we automatically detect if that's not the case? Generate C macros from the spec?
+     */
+    QString program = "/usr/share/ru.auroraos.InnoAurora5Gst/bin/iperf";
     QStringList arguments = m_args.split(" ");
     QProcess proc;
     proc.start(program, arguments);
