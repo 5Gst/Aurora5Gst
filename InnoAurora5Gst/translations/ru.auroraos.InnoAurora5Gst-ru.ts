@@ -46,19 +46,5 @@
         <source>Speed test</source>
         <translation>Измеритель скорости</translation>
     </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="142"/>
-        <source>
-Iperf completed successfully
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="144"/>
-        <source>
-Iperf failed
-</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 </TS>

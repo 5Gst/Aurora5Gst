@@ -97,16 +97,15 @@ Page {
 
         RowLayout {
             id: _buttonsrow
-            anchors.left: root.left
-            anchors.right: root.right
-            width: root.width
+            anchors.left: _col.left
+            anchors.right: _col.right
+            width: _col.width
             spacing: 80
-            anchors.horizontalCenter: parent.horizontalCenter
 
             Button {
                 id: startbutton
                 text: "Clean"
-                onClicked: {console.log("Clean"); iperfOutput.text="";}
+                onClicked: {console.log("Clean"); iperf.cleanIperf();}
 
             }
             Button {
@@ -151,14 +150,8 @@ Page {
 
     Iperf{
         id: iperf
-        onIperfFinished: {
-//            iperfOutput.text += "---\n"
+        onOutputChanged: {
             iperfOutput.text = output
-            if (success) {
-                iperfOutput.text += qsTr('\nIperf completed successfully\n')
-            } else {
-                iperfOutput.text += qsTr('\nIperf failed\n')
-            }
         }
     }
 

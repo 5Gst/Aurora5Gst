@@ -25,8 +25,8 @@ public:
 public slots:
     void startIperf();
     void cleanIperf();
-    void on_process_finished(int, QProcess::ExitStatus);
-// TODO Write handlers for error
+    void writeText();
+// TODO Write handler for error
 //    void readyReadStandardError();
 //    void readyReadStandardOutput();
 

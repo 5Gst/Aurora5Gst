@@ -2,18 +2,13 @@
 #include <QDebug>
 #include <QProcess>
 
-Iperf::Iperf(QObject *parent)
-    : QObject(parent)
+Iperf::Iperf(QObject *parent): QObject(parent)
 {
     qDebug() << "\n~~~\nCreate Iperf instance\n~~~\n";
-
-    //connect(proc, &QProcess::finished, this, &Iperf::on_process_finished);
-    //connect(proc, &QProcess::readyRead, this, &Iperf::on_process_finished);
-//    connect(&proc, SIGNAL(finished), this, SLOT(on_process_finished));
-    connect(&proc,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(on_process_finished(int,QProcess::ExitStatus)));
-
-
+    connect(&proc, SIGNAL(readyReadStandardOutput()), this, SLOT(writeText()));
+    connect(&proc, SIGNAL(readyReadStandardError()), this, SLOT(writeText()));
 }
+
 
 
 const QString &Iperf::args() const
@@ -34,18 +29,13 @@ const QString &Iperf::output() const
     return m_output;
 }
 
-//void Iperf::on_process_finished(int exitCode, QProcess::ExitStatus exitStatus)
-void Iperf::on_process_finished(int, QProcess::ExitStatus)
+void Iperf::writeText()
 {
-    QString out_text = "stdout:\n"+proc.readAllStandardOutput();
-    out_text += "\n\nstderr:\n"+proc.readAllStandardError();
+    QString out_text = proc.readAllStandardOutput() + "\n" + proc.readAllStandardError();
+    qDebug()<<"writeText func" + out_text +"\n";
 
-//    qDebug()<<"start"<<program<<"with args:"<<arguments;
-    qDebug()<<"Iperf::on_process_finished";
-
-    m_output += "\noutput:'"+out_text+"'";
-
-    emit iperfFinished(true);
+    m_output += out_text;
+    emit outputChanged();
 }
 
 void Iperf::startIperf()
@@ -75,4 +65,6 @@ void Iperf::startIperf()
 void Iperf::cleanIperf()
 {
     m_output = "";
+    qDebug()<<"clean func \n";
+    emit outputChanged();
 }
