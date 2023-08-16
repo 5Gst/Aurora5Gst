@@ -6,6 +6,13 @@ Iperf::Iperf(QObject *parent)
     : QObject(parent)
 {
     qDebug() << "\n~~~\nCreate Iperf instance\n~~~\n";
+
+    //connect(proc, &QProcess::finished, this, &Iperf::on_process_finished);
+    //connect(proc, &QProcess::readyRead, this, &Iperf::on_process_finished);
+//    connect(&proc, SIGNAL(finished), this, SLOT(on_process_finished));
+    connect(&proc,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(on_process_finished(int,QProcess::ExitStatus)));
+
+
 }
 
 
@@ -27,6 +34,20 @@ const QString &Iperf::output() const
     return m_output;
 }
 
+//void Iperf::on_process_finished(int exitCode, QProcess::ExitStatus exitStatus)
+void Iperf::on_process_finished(int, QProcess::ExitStatus)
+{
+    QString out_text = "stdout:\n"+proc.readAllStandardOutput();
+    out_text += "\n\nstderr:\n"+proc.readAllStandardError();
+
+//    qDebug()<<"start"<<program<<"with args:"<<arguments;
+    qDebug()<<"Iperf::on_process_finished";
+
+    m_output += "\noutput:'"+out_text+"'";
+
+    emit iperfFinished(true);
+}
+
 void Iperf::startIperf()
 {
     if (m_args.isEmpty()) {
@@ -45,17 +66,13 @@ void Iperf::startIperf()
      */
     QString program = "/usr/share/ru.auroraos.InnoAurora5Gst/bin/iperf";
     QStringList arguments = m_args.split(" ");
-    QProcess proc;
-    proc.start(program, arguments);
-    proc.waitForFinished();
-    QString out_text = "stdout:\n"+proc.readAllStandardOutput();
-    out_text += "\n\nstderr:\n"+proc.readAllStandardError();
 
+
+    proc.start(program, arguments);    
     qDebug()<<"start"<<program<<"with args:"<<arguments;
-    qDebug()<<"output"<<out_text;
+}
 
-    m_output = "start: '" + program + " " + arguments.join(" ") + "'";
-    m_output += "\noutput:'"+out_text+"'";
-
-    emit iperfFinished(true);
+void Iperf::cleanIperf()
+{
+    m_output = "";
 }

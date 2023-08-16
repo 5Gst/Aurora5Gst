@@ -41,68 +41,91 @@ import QtQuick.Layouts 1.1
 import iperf 1.0
 
 Page {
+    id: root
     objectName: "mainPage"
     allowedOrientations: Orientation.All
 
-    ColumnLayout {
-        spacing: 20
-        anchors.margins: 40
-        anchors.fill: parent
-
-        PageHeader {
-            objectName: "pageHeader"
-            title: qsTr("Speed test")
-            extraContent.children: [
+    PageHeader {
+        id: _pageheader
+        objectName: "pageHeader"
+        title: qsTr("Speed test")
+        extraContent.children: [
                 IconButton {
                     objectName: "aboutButton"
-                    icon.source: "image://theme/icon-m-about"
+                    icon.source: "image://theme/icon-m-developer-mode"
                     anchors.verticalCenter: parent.verticalCenter
-
                     onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
                 }
             ]
-        }
 
+    }
+
+    ColumnLayout {
+        id: _col
+        anchors.top: _pageheader.bottom
+        anchors.bottom: root.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        width: root.width
+
+        spacing: 20
+        anchors.margins: 20
 
         RowLayout {
+            id: _textfields
             width: parent.width
-            anchors.left: parent.left
-            layoutDirection: Qt.LeftToRight
-            spacing: -50 // IDK how to remove space between textfields, so I use this
+
             TextField {
+                id: _somefield
                 font.pixelSize: Theme.fontSizeSmall
                 text: "$ iperf"
                 readOnly: true
-                Layout.preferredWidth: 160
-
+//                Layout.alignment: Qt.AlignLeft
+                Layout.fillWidth: true
+//                width: 10
             }
+
             TextField {
                 id: arguments
+//                anchors.left: _somefield.right
                 placeholderText: "-c 5gst.ru -p 5555"
                 inputMethodHints: Qt.ImhUrlCharactersOnly
-                Layout.fillWidth: true
                 onTextChanged: {console.log("Change args"); iperf.args = text;}
-            }
-            Item {
-                // spacer item
-                Layout.preferredWidth: 80
-            }
-            Button {
-                id: startbutton
-                anchors.right: parent.right
-                width: 100
-                text: "Start"
-                onClicked: {console.log("Start"); iperf.startIperf();}
-                Layout.preferredWidth: 100
+                Layout.fillWidth: true
             }
         }
 
+        RowLayout {
+            id: _buttonsrow
+            anchors.left: root.left
+            anchors.right: root.right
+            width: root.width
+            spacing: 80
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            Button {
+                id: startbutton
+                text: "Clean"
+                onClicked: {console.log("Clean"); iperfOutput.text="";}
+
+            }
+            Button {
+                id: cleanbutton
+                text: "Start"
+                onClicked: {console.log("Start"); iperf.startIperf();}
+
+            }
+        }
+
+
         Item{
-            Layout.fillWidth: true
+            id: _console
+            width: parent.width
             Layout.fillHeight: true
 
             Rectangle{
-                anchors.fill: parent
+                height: _console.height
+                width: parent.width
                 border.width: 2
                 radius: 10
                 opacity: 0.2
@@ -110,7 +133,7 @@ Page {
             }
             SilicaFlickable {
                 anchors.margins: 20
-                anchors.fill: parent
+                anchors.fill: _console
                 contentWidth: iperfOutput.width; contentHeight: iperfOutput.height
                 clip: true
 
@@ -129,8 +152,8 @@ Page {
     Iperf{
         id: iperf
         onIperfFinished: {
-            iperfOutput.text += "---\n"
-            iperfOutput.text += output
+//            iperfOutput.text += "---\n"
+            iperfOutput.text = output
             if (success) {
                 iperfOutput.text += qsTr('\nIperf completed successfully\n')
             } else {
