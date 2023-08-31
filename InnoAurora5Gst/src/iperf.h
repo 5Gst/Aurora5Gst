@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QProcess>
 
 // Simple QML object to launch iperf.
 
@@ -23,6 +24,11 @@ public:
 
 public slots:
     void startIperf();
+    void cleanIperf();
+    void writeText();
+// TODO Write handler for error
+//    void readyReadStandardError();
+//    void readyReadStandardOutput();
 
 signals:
     void argsChanged();
@@ -33,6 +39,7 @@ private:
 
     QString m_args;
     QString m_output;
+    QProcess proc;
 };
 
 #endif // IPERF_H

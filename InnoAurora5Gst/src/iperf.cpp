@@ -2,11 +2,13 @@
 #include <QDebug>
 #include <QProcess>
 
-Iperf::Iperf(QObject *parent)
-    : QObject(parent)
+Iperf::Iperf(QObject *parent): QObject(parent)
 {
     qDebug() << "\n~~~\nCreate Iperf instance\n~~~\n";
+    connect(&proc, SIGNAL(readyReadStandardOutput()), this, SLOT(writeText()));
+    connect(&proc, SIGNAL(readyReadStandardError()), this, SLOT(writeText()));
 }
+
 
 
 const QString &Iperf::args() const
@@ -27,6 +29,15 @@ const QString &Iperf::output() const
     return m_output;
 }
 
+void Iperf::writeText()
+{
+    QString out_text = proc.readAllStandardOutput() + "\n" + proc.readAllStandardError();
+    qDebug()<<"writeText func" + out_text +"\n";
+
+    m_output += out_text;
+    emit outputChanged();
+}
+
 void Iperf::startIperf()
 {
     if (m_args.isEmpty()) {
@@ -45,17 +56,15 @@ void Iperf::startIperf()
      */
     QString program = "/usr/share/ru.auroraos.InnoAurora5Gst/bin/iperf";
     QStringList arguments = m_args.split(" ");
-    QProcess proc;
-    proc.start(program, arguments);
-    proc.waitForFinished();
-    QString out_text = "stdout:\n"+proc.readAllStandardOutput();
-    out_text += "\n\nstderr:\n"+proc.readAllStandardError();
 
+
+    proc.start(program, arguments);    
     qDebug()<<"start"<<program<<"with args:"<<arguments;
-    qDebug()<<"output"<<out_text;
+}
 
-    m_output = "start: '" + program + " " + arguments.join(" ") + "'";
-    m_output += "\noutput:'"+out_text+"'";
-
-    emit iperfFinished(true);
+void Iperf::cleanIperf()
+{
+    m_output = "";
+    qDebug()<<"clean func \n";
+    emit outputChanged();
 }

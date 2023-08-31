@@ -42,23 +42,9 @@
 <context>
     <name>MainPage</name>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="54"/>
+        <location filename="../qml/pages/MainPage.qml" line="51"/>
         <source>Speed test</source>
         <translation>Speed test</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="135"/>
-        <source>
-Iperf completed successfully
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="137"/>
-        <source>
-Iperf failed
-</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
