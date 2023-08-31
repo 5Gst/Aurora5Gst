@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Icon=ru.auroraos.InnoAurora5Gst
+Exec=/usr/bin/ru.auroraos.InnoAurora5Gst
+Name=Speed test
+Name[ru]=Измеритель скорости
+
+[X-Application]
+Permissions=Internet
+OrganizationName=ru.auroraos
+ApplicationName=InnoAurora5Gst
+ExecDBus=/usr/bin/ru.auroraos.InnoAurora5Gst

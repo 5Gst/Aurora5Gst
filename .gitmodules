@@ -1,0 +1,3 @@
+[submodule "InnoAurora5Gst/iPerf2"]
+	path = InnoAurora5Gst/iPerf2
+	url = https://github.com/5Gst/iPerf2-fork.git
